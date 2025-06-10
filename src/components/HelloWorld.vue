@@ -1,34 +1,36 @@
 <template>
   <div class="modern-wedding-site">
     <!-- Trái tim bay -->
-    <div id="floating-hearts"></div>
+    <!-- <div id="floating-hearts"></div> -->
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top">
-      <div class="container">
-        <a class="navbar-brand fw-bold" style="font-family: 'Great Vibes', cursive" href="#">V & H</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="#about">Cặp Đôi</a>
-            </li>
-             <li class="nav-item">
-              <a class="nav-link" href="#cautruyen">Câu Chuyện</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#events">Sự Kiện</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#gallery">Thư Viện Ảnh</a>
-            </li>
-            <li class="nav-item"><a class="nav-link" href="#qr">RSVP</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark" style="background-color: #4848489e">
+  <div class="container">
+    <a class="navbar-brand fw-bold" style="font-family: 'Great Vibes', cursive" href="#">V ♥️ H</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#about">Cặp Đôi</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#cautruyen">Câu Chuyện</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#events">Sự Kiện</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#gallery">Thư Viện Ảnh</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#qr">RSVP</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
     <!-- Hero Section -->
     <section class="hero d-flex align-items-center justify-content-center text-center">
@@ -339,13 +341,15 @@
 
         <div class="masonry">
           <div class="masonry-item" v-for="(image, index) in albumImages" :key="index" data-aos="zoom-in"
-            :data-aos-delay="index * 100">
-            <img :src="image" class="img-fluid rounded shadow-sm" :alt="`Ảnh cưới ${index + 1}`" />
-          </div>
+  :data-aos-delay="index * 100" @click="openImageModal(image)">
+  <img :src="image" class="img-fluid rounded shadow-sm" :alt="`Ảnh cưới ${index + 1}`" />
+</div>
         </div>
       </div>
     </section>
-
+    <div v-if="selectedImage" class="image-modal" @click="closeModal">
+  <img :src="selectedImage" class="modal-image" />
+</div>
     <section id="qr" class="hero3 d-flex align-items-center justify-content-center text-center">
       <div class="container">
         <h1 class="display-2 fw-bold section-title" data-aos="fade-down">
@@ -399,6 +403,9 @@
       <p class="small text-muted">Crafted with love and elegance</p>
     </footer>
   </div>
+  <div class="floating-music-button" @click="toggleMusic">
+  <i :class="isMusicPlaying ? 'fas fa-volume-up' : 'fas fa-volume-mute'"></i>
+</div>
 </template>
 
 <script>
@@ -416,10 +423,19 @@ export default {
         seconds: "00",
       },
       targetDate: new Date("2025-07-05T00:00:00"),
-      albumImages: albumImages
+      albumImages: albumImages,
+      isMusicPlaying: false,
+      audio: null,
+      selectedImage: null,
     };
   },
   methods: {
+    openImageModal(image) {
+    this.selectedImage = image; // Gán ảnh được chọn vào `selectedImage`
+  },
+  closeModal() {
+    this.selectedImage = null; // Đóng modal bằng cách đặt `selectedImage` về null
+  },
     updateCountdown() {
       const now = new Date();
       const diff = this.targetDate - now;
@@ -461,24 +477,36 @@ export default {
         navbar.classList.remove("scrolled");
       }
     },
-    launchHearts() {
-      setInterval(() => {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.style.left = `${Math.random() * 100}vw`;
-        heart.style.bottom = "0";
-        heart.style.animationDuration = `${4 + Math.random() * 4}s`;
-        heart.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 80%)`;
-        document.getElementById("floating-hearts").appendChild(heart);
-        setTimeout(() => heart.remove(), 8000);
-      }, 500);
-    },
+    toggleMusic() {
+    if (!this.audio) {
+      this.audio = new Audio('/audio/audio.m4a'); // Thay đường dẫn bằng file nhạc của bạn
+      this.audio.loop = true;
+    }
+    if (this.isMusicPlaying) {
+      this.audio.pause();
+    } else {
+      this.audio.play();
+    }
+    this.isMusicPlaying = !this.isMusicPlaying;
+  },
+    // launchHearts() {
+    //   setInterval(() => {
+    //     const heart = document.createElement("div");
+    //     heart.className = "heart";
+    //     heart.style.left = `${Math.random() * 100}vw`;
+    //     heart.style.bottom = "0";
+    //     heart.style.animationDuration = `${4 + Math.random() * 4}s`;
+    //     heart.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 80%)`;
+    //     document.getElementById("floating-hearts").appendChild(heart);
+    //     setTimeout(() => heart.remove(), 8000);
+    //   }, 500);
+    // },
   },
   mounted() {
     this.updateCountdown();
     this.timerInterval = setInterval(this.updateCountdown, 1000);
     window.addEventListener("scroll", this.onScroll);
-    this.launchHearts();
+    // this.launchHearts();
   },
   beforeUnmount() {
     clearInterval(this.timerInterval);
@@ -543,7 +571,31 @@ body,
     column-count: 1;
   }
 }
+.floating-music-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background-color: #d63384;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+}
 
+.floating-music-button:hover {
+  transform: scale(1.1);
+}
+
+.floating-music-button i {
+  font-size: 24px;
+}
 .timeline {
   position: relative;
   padding: 2rem 0;
@@ -629,8 +681,8 @@ body,
 
 .hero {
   background: linear-gradient(rgba(110, 31, 43, 0.3), rgba(0, 0, 0, 0.6)),
-    url("http://192.168.1.49:8080/img/khung/DSC03266.jpg") center/cover no-repeat;
-  height: 100vh;
+    url("http://192.168.51.110:8080/img/khung/DSC03266.jpg") center/cover no-repeat;
+  height: 150vh;
   color: #fff;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
@@ -641,7 +693,7 @@ body,
 
 .hero2 {
   background: linear-gradient(rgba(110, 31, 43, 0.3), rgba(0, 0, 0, 0.6)),
-    url("http://192.168.1.49:8080/img/khung/DSC03760.jpg") center/cover no-repeat;
+    url("http://192.168.51.110:8080/img/khung/DSC03760.jpg") center/cover no-repeat;
   height: 60vh;
   color: #fff;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
@@ -653,7 +705,7 @@ body,
 
 .hero3 {
   background: linear-gradient(rgba(110, 31, 43, 0.3), rgba(0, 0, 0, 0.6)),
-    url("http://192.168.1.49:8080/img/khung/DSC03022.jpg") center/cover no-repeat;
+    url("http://192.168.51.110:8080/img/khung/DSC03022.jpg") center/cover no-repeat;
   height: 30vh;
   color: #fff;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
@@ -724,7 +776,26 @@ body,
 .btn:hover {
   transform: scale(1.05);
 }
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+}
 
+.modal-image {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
 #floating-hearts {
   position: fixed;
   top: 0;
