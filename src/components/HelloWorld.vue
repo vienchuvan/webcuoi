@@ -681,7 +681,7 @@ body,
 
 .hero {
   background: linear-gradient(rgba(110, 31, 43, 0.3), rgba(0, 0, 0, 0.6)),
-    url("http://192.168.51.110:8080/img/khung/DSC03266.jpg") center/cover no-repeat;
+    url("https://happywedding.info.vn/img/khung/DSC03266.jpg") center/cover no-repeat;
   height: 150vh;
   color: #fff;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
@@ -693,7 +693,7 @@ body,
 
 .hero2 {
   background: linear-gradient(rgba(110, 31, 43, 0.3), rgba(0, 0, 0, 0.6)),
-    url("http://192.168.51.110:8080/img/khung/DSC03760.jpg") center/cover no-repeat;
+    url("https://happywedding.info.vn/img/khung/DSC03760.jpg") center/cover no-repeat;
   height: 60vh;
   color: #fff;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
@@ -705,7 +705,7 @@ body,
 
 .hero3 {
   background: linear-gradient(rgba(110, 31, 43, 0.3), rgba(0, 0, 0, 0.6)),
-    url("http://192.168.51.110:8080/img/khung/DSC03022.jpg") center/cover no-repeat;
+    url("https://happywedding.info.vn/img/khung/DSC03022.jpg") center/cover no-repeat;
   height: 30vh;
   color: #fff;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
